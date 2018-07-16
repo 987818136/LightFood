@@ -1,0 +1,22 @@
+.bgcolor,.primary-button{
+	background-color: #777;
+	color: white;
+}
+.primary-button{
+	text-align: center;
+	padding: 6px 0px;
+}
+.left-header{
+	text-align: left;
+	padding-left: 10px;
+}
+.title-m{
+	font-size: 16px;
+}
+*{
+	color: #222;
+	font-size: arial;
+}
+button:active{
+background-color:#524F4F;
+}
