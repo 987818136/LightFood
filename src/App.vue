@@ -24,7 +24,9 @@ export default {
       myfoot
   },
   mounted:function(){
-  new scroll(this.$refs.scrollwrap);
+  new scroll(this.$refs.scrollwrap,{
+    click:true
+  });
   },
   data:function(){
     return {

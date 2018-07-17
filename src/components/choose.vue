@@ -1,19 +1,16 @@
 <template>
 	<div class="choosecontent">
     <div class="select-content">
-     <div class="my-selected sport-type sport-select" @click="dropdown">
+     <div class="my-selected sport-type sport-select" @click="dropdown" >
        <span class="sport-name">{{this.sportType}}</span>
        <span :class="['iconfont',sporticon]"></span>
-       <div class="dropdown" v-if="dropdownshow">
-         <div class="dropdown-li" v-for="item of sportList">{{item.type}}</div>
+       <transition name="drop">
+       <div class="dropdown" v-show="dropdownshow" >
+         <div class="dropdown-li" v-for="item of sportList" @click="lichoose(item.type,item.kcal)">{{item.type}}</div>
        </div>
+       </transition>
      </div>
-     <div class="my-selected sport-time time-select" @click="dropdown">
-       <span class="sport-name">{{this.timeString}}</span>
-       <span :class="['iconfont',timeicon]"></span>
-       <div class="dropdown">
-         <div class="dropdown-li" v-for="item of timelist"></div>
-       </div>
+     <div class="my-selected time-select"><input type="text" v-model="sportTime" placeholder="运动时间" /><span class="sport-name">分钟</span>
      </div>    
      <button class="primary-button choose-delete" @click="choosedelet">删除</button> 
     </div>
@@ -25,27 +22,26 @@
  
 	export default {
 		name:"choose",
-    props:['index'],
+    props:['index',"choosetype"],
 	 data:function(){
     return {
       sportList:[
-      {type:"慢跑",kcal:0},
-      {type:"快跑",kcal:0},
-      {type:"跳绳",kcal:0},
-      {type:"有氧操",kcal:0},
-      {type:"游泳",kcal:0},
-      {type:"跳舞（快）",kcal:0},
-      {type:"跳舞(慢)",kcal:0},
-      {type:"散步",kcal:0},
-      {type:"无氧训练",kcal:0}
+      {type:"慢跑",kcal:120},
+      {type:"快跑",kcal:90}, 
+      {type:"跳绳",kcal:120},
+      {type:"有氧操",kcal:120},
+      {type:"游泳",kcal:120},
+      {type:"跳舞（快）",kcal:120},
+      {type:"跳舞(慢)",kcal:120},
+      {type:"散步",kcal:120},
+      {type:"无氧训练",kcal:120}
       ],
-      timelist:[],
-      sportType:"请选择运动类型",
-      sportTime:0,
+      sportkCal:0,
+      sportType:"运动类型",
+      sportTime:'',
       singleKcal:0,
       dropdownshow:false,
-      sporticon:"icon-xialajiantou",
-      timeicon:"icon-xialajiantou",
+      sporticon:"icon-xialajiantou"
     }
    },
    computed:{
@@ -75,12 +71,36 @@
           this.sporticon="icon-xialajiantou"
         }        
       }
+    },
+    lichoose:function(type,kcal){
+       this.sportType=type;
+       this.sportkCal=kcal;
+    },
+   },
+
+   watch:{
+    sportTime:function(newnum,old){
+      var kcal=this.sportkCal;
+     this.singleKcal=newnum*kcal;
+    },
+    sportkCal:function(newnum){
+      var time=this.sportTime;
+     this.singleKcal=newnum*time;
+    },
+    singleKcal:function(newnum){
+      this.$emit("datachang",this.index,this.sportTime,newnum);
     }
    }
 	}
 </script>
 
 <style type="text/css">
+.drop-enter-active, .drop-leave-active {
+  transition: opacity .5s;
+}
+.drop-enter, .drop-leave-to {
+  opacity: 0;
+}
  .select-content{
    height: 28px;
  }
@@ -97,7 +117,7 @@
   position: relative;
  }
  .sport-select{
-  width:45%;
+  width:40%;
  }
  .kcal-message{
   margin-top: 10px;
@@ -109,8 +129,25 @@
   }
  .time-select{
   margin-left:10px;
-  width: 25%;
+  width: 30%;
+  overflow: hidden;
  }
+  .time-select input{
+    width: 55%;
+    height: 100%;
+    float: left;
+    padding-left: 8px;
+  }
+    .time-select input,.time-select span{
+      line-height: 25px;
+      font-size: 12px;
+    }
+    .time-select span{
+      float: right;
+    }
+    .time-select input::placeholder{
+      font-size: 12px;
+    }
 .choose-delete{
   width: 20%;
   color: white;
@@ -133,5 +170,8 @@
   width: 100%;
   text-align: center;
   background-color: white;
+}
+.dropdown-li{
+  padding-bottom: 6px;
 }
 </style>
