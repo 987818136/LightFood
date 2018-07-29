@@ -23,7 +23,13 @@ export default {
       myhead,
       myfoot
   },
-  mounted:function(){
+   mounted:function(){
+    console.log(1);
+  new scroll(this.$refs.scrollwrap,{
+    click:true
+  });
+  },
+  updated:function(){
   new scroll(this.$refs.scrollwrap,{
     click:true
   });
@@ -43,16 +49,15 @@ export default {
 
 <style>
 #app{
-  padding-top: 45px;
-  padding-bottom: 48px;
+ overflow: hidden;
 }
 .wraper{
  position: absolute;
- top: 45px;
+ top: 42px;
  width: 100%;
- bottom: 48px;
+ bottom: 0px;
  overflow: hidden;
  box-sizing: border-box;
- padding: 0 10px;
+ 
 }
 </style>

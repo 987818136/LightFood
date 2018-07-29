@@ -1,30 +1,28 @@
-
-
 <template>
-  <swiper :options="swiperOption" @someSwiperEvent="callback">
-    <swiper-slide v-for="item in banerlist">
-      <img :src="item.imgurl">
-      <div class="banneritem-message">this is a message</div>
+  <swiper :options="swiperOption">
+    <swiper-slide v-for="slide in banerlist">
+      <img :src="slide.imgurl"/>
+      <div class="slide-title">{{slide.mes}}</div>
     </swiper-slide>
-    <div class="swiper-pagination"  slot="pagination"></div>
+ 
   </swiper>
 </template>
-	<!--<swiper :options="" @someSwiperEvent="">
-	  <swiper-slide v-for="item in banerlist" :key="item.id">
-	  	 <img :src="item.imgurl" />
-	  </swiper-slide>
-	   <div class="swiper-pagination"  slot="pagination"></div>
-	</swiper>-->
-	
 
 <script type="text/javascript">
+import 'swiper/dist/css/swiper.css';
+import { swiper, swiperSlide } from 'vue-awesome-swiper'
+import Vue from "vue";
+ 
 	export default {
        name:"banner",
+       components:{
+    swiper,
+    swiperSlide        
+       },
        data:function(){
        	return {
-       		banerlist:[{id:"001",imgurl:"../../static/img/b1.jpg",mes:""},{id:"002",imgurl:"../../static/img/b2.jpg",mes:""},{id:"003",imgurl:"../../static/img/b3.jpg",mes:""}],
+       		banerlist:[{id:"001",imgurl:"../../static/img/b1.jpg",mes:"this is mes"},{id:"002",imgurl:"../../static/img/b2.jpg",mes:"this is mes"},{id:"003",imgurl:"../../static/img/b3.jpg",mes:"this is mes"}],
        		swiperOption:{
-
        			loop:true
        		}
        	}
@@ -38,9 +36,10 @@
 </script>
 <style type="text/css">
     .swiper-slide{
-    	height: 210px;
+     height: 0;
     	overflow: hidden;
     	position: relative;
+      padding-bottom: 50%;
     }
     .banneritem-message{
     	position: absolute;
@@ -51,8 +50,19 @@
     	height: 35PX;
     	line-height: 35PX;
     	color:white;
+
     }
 	.swiper-slide img{
 		width: 100%;
 	}
+  .slide-title{
+    position: absolute;
+    bottom: 0px;
+    background-color: rgba(22, 18, 18, 0.5);
+    color: white;
+    width: 100%;
+    text-align: center;
+    padding: 8px 0px;
+    font-size: 12px;
+  }
 </style>

@@ -1,6 +1,6 @@
 <template>
- <div class="header bgcolor">
- 	<div class="header-left iconfont">&#xe604</div>
+ <div class="header bgcolor flex-fix">
+ 	<div class="header-left iconfont" @click="getback">&#xe604</div>
  	<h4>{{this.headertitle}}</h4>
  	<div class="header-right iconfont">&#xe60d</div>
  </div>
@@ -12,18 +12,20 @@
        data:function(){
        	return {
        	}
+       },
+       methods:{
+       	getback:function(){
+       		history.back();
+       	}
        }
 	}
 </script>
 <style type="text/css">
 	.header{
-		display: flex;
-		position: fixed;
 		width: 100%;
 		padding: 6px 0px;
 		height: 30px;
 		top: 0;
-        z-index: 99999;
 	}
 	.header h4{
    text-align: center;

@@ -10,11 +10,11 @@
        </div>
        </transition>
      </div>
-     <div class="my-selected time-select"><input type="text" v-model="sportTime" placeholder="运动时间" /><span class="sport-name">分钟</span>
+     <div class="my-selected time-select"><input type="text" v-model="sportTime" :placeholder="choosetype==='sport'?'运动时间':'食物量'" /><span class="sport-name"> {{choosetype==='sport'?'分钟':'克'}}</span>
      </div>    
      <button class="primary-button choose-delete" @click="choosedelet">删除</button> 
     </div>
-      <div class="kcal-message"><span class="iconfont">&#xe6a0</span><span>{{this.singleKcal+'Kcal'}}</span></div>          
+      <div class="kcal-message"><span class="iconfont">&#xe6a0</span><span>{{this.singleKcal+'kCal'}}</span></div>          
 	</div>						
 </template>
 
@@ -45,32 +45,20 @@
     }
    },
    computed:{
-    timeString:function(){
-      return this.sportTime+"分钟"
-    }
+ 
    },
    methods:{
     choosedelet:function(){
-      this.$emit("fatherdelet",this.index);
+      this.$emit("fatherdelet",this.index,this.choosetype);
     },
     dropdown:function(type){
       this.dropdownshow=!this.dropdownshow;
-      if(type==="sport"){
         if(this.sporticon==="icon-xialajiantou"){
           this.sporticon="icon-shangjiantou"
         }
         else{
           this.sporticon="icon-xialajiantou"
         }
-      }
-      else{
-        if(this.sporticon==="icon-xialajiantou"){
-          this.sporticon="icon-shangjiantou"
-        }
-        else{
-          this.sporticon="icon-xialajiantou"
-        }        
-      }
     },
     lichoose:function(type,kcal){
        this.sportType=type;
@@ -88,7 +76,7 @@
      this.singleKcal=newnum*time;
     },
     singleKcal:function(newnum){
-      this.$emit("datachang",this.index,this.sportTime,newnum);
+      this.$emit("datachang",this.index,this.sportTime,newnum,this.choosetype);
     }
    }
 	}
@@ -103,9 +91,10 @@
 }
  .select-content{
    height: 28px;
+   padding-left: 10px;
  }
  .choosecontent{
-  padding-bottom: 20px;
+  padding-bottom: 10px;
     font-size: 12px;
  }
  .my-selected{
@@ -120,7 +109,7 @@
   width:40%;
  }
  .kcal-message{
-  margin-top: 10px;
+  margin-top: 5px;
   font-size: 16px;
  }
   .kcal-message .iconfont{
@@ -151,7 +140,7 @@
 .choose-delete{
   width: 20%;
   color: white;
-  background-color: #FF9B0B;
+  background-color: #777;
   border-radius: 5px;
   float: left;
   margin-left: 10px;

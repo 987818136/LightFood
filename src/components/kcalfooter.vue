@@ -1,5 +1,5 @@
 <template>
-	<div class="footer bgcolor" >
+	<div class="footer bgcolor flex-fix" >
         <div class="color-ban" ref="coloer"></div>
         <div :class="['footer-item',item.classon]" v-for="(item,index) of classList" @click="bottomclick(index,item.name)">
            <router-link :to="item.path">   
@@ -17,24 +17,25 @@
          classList:[
                      {name:"热量计算",classon:{footeronchoose:true},icon:"icon-jisuan",path:"/"},
                      {name:"健身技巧",classon:{footeronchoose:false},icon:"icon-jianshenqicai",path:"/train"},
-                     {name:"轻体圈",classon:{footeronchoose:false},icon:"icon-jianshenquan",path:"/sporter"},
+                     {name:"日常打卡",classon:{footeronchoose:false},icon:"icon-jianshenquan",path:"/card"},
                      {name:"个人中心",classon:{footeronchoose:false},icon:"icon-geren11",path:"/mine"}],
          leftDistance:0,
-         timer:null
+         timer:null,
+         nowrouter:0
         }
+       },
+       watch:{
+        $route:function(){
+         this.routerchang();
+        }
+       },
+       mounted:function(){
+          this.routerchang();
        },
        methods:{
          bottomclick:function(num,name){
-           var that=this;
-           this.classList.forEach(function(item){
-           if(item.classon.footeronchoose===true){
-             item.classon.footeronchoose=false;
-             }
-           })
-           this.classList[num].classon.footeronchoose=true;
-           this.$emit("footerchange",name);
-           //调用动画方法
-           this.move(num);
+            this.$emit("footerchange",name);
+            this.move(num);
          },
          move:function(num){
            var that=this;
@@ -42,7 +43,7 @@
            var targetLeft=25*num;
            var movedistance=targetLeft-this.leftDistance>0?1:-1;
            if(targetLeft!=this.leftDistance){
-           that.timer=setInterval(function(){
+             that.timer=setInterval(function(){
              that.leftDistance+=movedistance;
              that.$refs.coloer.style.left=that.leftDistance+"%";
            if(that.leftDistance===targetLeft){
@@ -51,6 +52,18 @@
            }
            }, 1)
            }
+         },
+         routerchang:function(){
+          var _nowrouter=this.$route.path;
+          var num=0;
+          this.classList.forEach(function(item,index){
+            item.classon.footeronchoose=false;
+            if(item.path===_nowrouter){
+              item.classon.footeronchoose=true;
+              num=index;
+            };
+          });
+          this.move(num); 
          }
        }
 	}
@@ -61,7 +74,7 @@
             position: fixed;
             bottom: 0px;
             width: 100%;
-            z-index: 9999;
+            z-index: 99;
       }
       .footer-item{
             flex-grow: 1;
