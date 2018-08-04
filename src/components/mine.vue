@@ -10,18 +10,22 @@
                闪闪发光的sparsh
               </div>
               <div class="user-grary">
-                <span></span><span>10个</span>
+                <span class="iconfont">&#xe60e</span><span>10个</span>
               </div>
             </div>
           </div>
           <div class="user-kcalc">
        	 <div class="user-target-content">
+             <div class="user-target-letter">
+               <span class="user-now">当前瘦身：{{this.usernow}}</span>
+               <span class="user-target">目标瘦身：{{this.usertarget}}</span>
+             </div>
              <canvas ref="linedraw"  ></canvas>
        	 </div>
           </div>       	 
            <div class="user-sport-data">
-              <h5 class="user-sport-tile">累积消耗了</h5>
-       	 <div class="user-sport-record">
+            <h5 class="user-sport-tile">累积消耗了</h5>
+       	    <div class="user-sport-record">
        	    <div class="user-sport">
        	      <div class="user-sport-num">
        	      	0
@@ -30,7 +34,6 @@
        	      	kCal
        	      </div>
        	    </div>
-       	   	
        	 </div>
         </div>
        </div>
@@ -47,7 +50,8 @@
 		name:"mine",
 		data:function(){
 			return {
-	     
+	     usernow:4.5,
+       usertarget:20
 			}
 		},
      mounted:function(){
@@ -58,9 +62,9 @@
       var ctx=cav.getContext("2d");
       ctx.beginPath();     
       ctx.shadowBlur=10;
-      ctx.shadowColor="red";      
+      ctx.shadowColor="#F9BC73";      
       ctx.rect(0,0,width*0.3,10);
-      ctx.fillStyle="rgba(255, 41, 41,1)" ;     
+      ctx.fillStyle="#F9BC73" ;     
       ctx.fill();
      },
 		methods:{
@@ -121,5 +125,36 @@ text-align: center;
   font-size: 14px;
   padding-bottom: 10px;
   
+}
+.userinformation{
+background-image: linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%);
+}
+.user-grary span{
+  vertical-align: middle;
+  margin-right: 10px;
+}
+.user-grary .iconfont{
+  color:yellow;
+}
+.user-sport-data{
+  padding-left: 15px;
+
+  padding-bottom: 10px;
+}
+
+
+.user-now{
+  float: left;
+}
+.user-target{
+  float: right;
+}
+.user-target,.user-now{
+  font-size: 12px;
+  padding-bottom: 4px;
+  color:white;
+}
+.handle-li{
+  border-bottom: 1px solid #e1e1e1;
 }
 </style>

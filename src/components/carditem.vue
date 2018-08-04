@@ -20,9 +20,11 @@ export default {
   },
   methods:{
   cardFin:function(){
+    if(!this.finish){
      this.finish=true;
      this.finishmes="已完成";
      this.$emit("finishadd");
+    }
    },
    fatherDelete:function(){
     this.$emit("cardremove",this.index);
@@ -32,5 +34,29 @@ export default {
 </script>
 
 <style type="text/css">
- 
+ .carditem-title{
+  padding:10px;
+ }
+ .carditem-content{
+  margin-bottom: 15px;
+    border-bottom:1px solid #e1e1e1;
+    padding-bottom: 10px;
+ }
+ .confirm-card, .card-remove{
+  border-radius: 10px;
+  color: white;
+ }
+ .confirm-card{
+  background-color:#15C015;
+  width: 40%;
+  padding: 4px 0;
+ }
+ .card-remove{
+  width: 20%;
+  padding: 5px 0;
+  background-color: #777;
+ }
+ .carditemfinish{
+  background-color: #C8C7C7;
+ }
 </style>

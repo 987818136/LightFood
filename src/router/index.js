@@ -3,7 +3,7 @@ import Router from 'vue-router'
 import calc from '@/components/calc'
 import train from '@/components/train'
 import detail from "@/components/detail"
-import mine from "@/components/mine"
+import mine from "@/components/login"
 import card from "@/components/card"
 Vue.use(Router)
 

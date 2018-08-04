@@ -24,17 +24,18 @@
 	.header{
 		width: 100%;
 		padding: 6px 0px;
-		height: 30px;
+		height:25px;
 		top: 0;
 	}
 	.header h4{
    text-align: center;
    flex-grow: 1;
-   line-height: 30px;
+   line-height:25px;
    color: white;
 	}
 	.header-left,.header-right{
 		color: white;
+		line-height:25px;
 	}
 	.header-left{
             width: 8%;

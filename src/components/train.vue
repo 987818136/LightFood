@@ -52,8 +52,12 @@ export default {
 </script>
 
 <style type="text/css">
+.article-wraper{
+  padding-bottom: 70px;
+}
 	.traincontent{
 		padding-bottom: 100px;
     background-color: #f1f1f1;
+    
 	}
 </style>

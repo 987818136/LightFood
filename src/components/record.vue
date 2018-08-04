@@ -49,6 +49,9 @@ export default {
 </script>
 
 <style>
+.record-content *{
+  color: white;
+}
 .record-content{
   top:0;
   bottom: 0;
@@ -56,7 +59,8 @@ export default {
   right: 0;
   z-index: 9999;
   display: block;
-  background-color: black;
+  background-image: linear-gradient(120deg, #fda085 0%, #f6d365 100%);
+  text-align: center;
 }
 .record-enter-active, .record-leave-active {
   transition: left .5s;

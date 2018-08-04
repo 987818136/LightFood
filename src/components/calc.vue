@@ -46,10 +46,7 @@
       </choose>
       <button class="primary-button add-button" @click="additem('foodList')">添加食物</button>      
     </div>   
-    <button class="submit primary-button" @click="showrecord">记录</button>  
-    <transition name="record">
-    <record v-if="recordshow" :sportkcal="allkcal" :foodkcal="foodkcal" @hiddenrecord="hiddenrecord" :usertarget="usertarget"></record>
-    </transition>                                                          
+    <button class="submit primary-button" @click="showrecord">记录</button>                                                         
 	</div>						
 </template>
 
@@ -94,10 +91,7 @@
         this[type+'List'][index].kcal=kcal;
       },
       showrecord:function(){
-        this.recordshow=true;
-      },
-      hiddenrecord:function(){
-        this.recordshow=false;
+        this.$emit("recordme",this.allkcal,this.foodkcal)
       }
     },
     computed:{
@@ -191,6 +185,9 @@ background-image: linear-gradient(120deg, #fda085 0%, #f6d365 100%);
   width: 80%;
   border-radius: 5px;
   padding: 8px 0px;
-
 }
+.homecontent{
+  padding-bottom: 300px;
+}
+
 </style>

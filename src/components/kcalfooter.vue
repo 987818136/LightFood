@@ -56,12 +56,17 @@
          routerchang:function(){
           var _nowrouter=this.$route.path;
           var num=0;
+          console.log(_nowrouter);
           this.classList.forEach(function(item,index){
             item.classon.footeronchoose=false;
             if(item.path===_nowrouter){
               item.classon.footeronchoose=true;
-              num=index;
-            };
+               num=index;
+            }
+            else if(_nowrouter.indexOf(item.path)!=-1&&item.path!="/"){
+              item.classon.footeronchoose=true;
+               num=index;
+            }
           });
           this.move(num); 
          }
