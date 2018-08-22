@@ -1,8 +1,9 @@
 <template>
   <div class="record-content flex-fix" >\
-    <p>{{this.finalkcal}}</p>    
+    <p v-html="finalkcal"></p>    
     <div v-html="message"></div>
-    <button @click="hiddenme">我知道了</button>
+    <button @click="recoreto" class="recore-hidden">记录</button>
+    <button @click="hiddenme" class="recore-hidden record-re">重新计算</button>
   </div>
 </template>
 
@@ -13,11 +14,24 @@ export default {
   data:function(){
     return { 
     recoreNum:0,
+    fatreduce:0
     }
   },
   methods:{
    hiddenme:function(){
     this.$emit("hiddenrecord")
+   },
+   recoreto:function(){
+    var that=this;
+    this.hiddenme();
+ 
+    this.axios.get("./api/lf/getcookie.php").then(function(re){
+            var uid=re.data;
+            var _data="allconsume="+that.sportkcal+"&allfood="+that.foodkcal+"&reduce="+that.fatreduce/500+"&uid="+uid;
+           that.axios.post("./api/lf/recordcalc.php",_data).then(function(re){
+              console.log(re.data);
+           })
+        });   
    }
   },
   computed:{
@@ -25,22 +39,22 @@ export default {
       var _num=this.foodkcal-this.sportkcal;
       this.recoreNum=_num;
       var mess=_num<0?'今日消耗了':'今日堆积了';
-      return mess+Math.abs(_num)+"kCal";
+      return mess+"<span class='numstrong'>"+Math.abs(_num)+"kCal</span>";
     },
     message:function(){
       var _message="";
       var _num=this.recoreNum;
       var _absnum=Math.abs(_num);
-      var _fatreduce=_absnum/7700;
+      this.fatreduce=_absnum/7700*1000;
      if(_num<0){
         _message+="<p>很棒噢，"
-        _message+="今天减少了<span class='numstrong'>"+_fatreduce.toFixed(2)+"</span>克脂肪，</p>"
-        _message+="<p>离目标靠近了<span class='numstrong'>"+(_fatreduce/this.usertarget).toFixed(4)+"%</span>。</p>"
+        _message+="今天减少了<span class='numstrong'>"+this.fatreduce.toFixed(2)+"</span>克脂肪，</p>"
+        _message+="<p>离目标靠近了<span class='numstrong'>"+(this.fatreduce/this.usertarget).toFixed(4)+"%</span>。</p>"
       }
       else{
         _message+="<p>还要加油奥 "
-        _message+="今天增加了<span class='numstrong'>"+_fatreduce+"</span>克脂肪，</p>"
-        _message+="<p>离目标远离了<span class='numstrong'>"+_fatreduce/this.usertarget+"%</span>。</p>"        
+        _message+="今天增加了<span class='numstrong'>"+this.fatreduce.toFixed(2)+"</span>克脂肪，</p>"
+        _message+="<p>离目标远离了<span class='numstrong'>"+(this.fatreduce/this.usertarget).toFixed(4)+"%</span>。</p>"        
       }
       return _message
     }
@@ -69,6 +83,21 @@ export default {
   left:999px;
 }
 .numstrong{
-  color: red
+  color: #15C015;
+  font-size:28px;
+}
+.record-content p{
+  padding-bottom: 15px;
+}
+.recore-hidden{
+  width: 40%;
+  height: 35px;
+  text-align: center;
+  line-height: 35px;
+  border-radius: 15px;
+  background-color: #15C015;
+}
+.record-re{
+  background-color: #777;
 }
 </style>

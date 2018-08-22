@@ -10,7 +10,7 @@
        </div>
        </transition>
      </div>
-     <div class="my-selected time-select"><input type="text" v-model="sportTime" :placeholder="choosetype==='sport'?'运动时间':'食物量'" /><span class="sport-name"> {{choosetype==='sport'?'分钟':'克'}}</span>
+     <div class="my-selected time-select"><input type="text" v-model="sportTime" :placeholder="choosetype==='sport'?'运动时间':'食物量'" /><span class="sport-name"> {{choosetype==='sport'?'分钟':'份'}}</span>
      </div>    
      <button class="primary-button choose-delete" @click="choosedelet">删除</button> 
     </div>
@@ -26,15 +26,15 @@
 	 data:function(){
     return {
       sportList:[
-      {type:"慢跑",kcal:120},
-      {type:"快跑",kcal:90}, 
-      {type:"跳绳",kcal:120},
-      {type:"有氧操",kcal:120},
-      {type:"游泳",kcal:120},
-      {type:"跳舞（快）",kcal:120},
-      {type:"跳舞(慢)",kcal:120},
-      {type:"散步",kcal:120},
-      {type:"无氧训练",kcal:120}
+      {type:"慢跑",kcal:10.9},
+      {type:"快跑",kcal:12}, 
+      {type:"跳绳",kcal:7.4},
+      {type:"有氧操",kcal:10.1},
+      {type:"游泳",kcal:9},
+      {type:"跳舞（快）",kcal:6.4},
+      {type:"跳舞(慢)",kcal:4.8},
+      {type:"散步",kcal:3.8},
+      {type:"无氧训练",kcal:7.2}
       ],
       sportkCal:0,
       sportType:"运动类型",
@@ -46,6 +46,37 @@
    },
    computed:{
  
+   },
+   mounted:function(){
+    if(this.choosetype==="sport"){
+      this.sportList=[
+      {type:"慢跑",kcal:10.9},
+      {type:"快跑",kcal:12}, 
+      {type:"跳绳",kcal:7.4},
+      {type:"有氧操",kcal:10.1},
+      {type:"游泳",kcal:9},
+      {type:"跳舞（快）",kcal:6.4},
+      {type:"跳舞(慢)",kcal:4.8},
+      {type:"散步",kcal:3.8},
+      {type:"无氧训练",kcal:7.2}
+      ];
+    }
+    else{
+      this.sportList=[
+      {type:"鸡胸肉沙拉",kcal:1296},      
+      {type:"果蔬沙拉",kcal:765.5}, 
+      {type:"龙利鱼沙拉",kcal:1194.4},
+      {type:"水果酸奶沙拉",kcal:824.2},
+      {type:"健身小盒",kcal:1924.6},
+      {type:"减脂小盒",kcal:1230.4},       
+      {type:"玉米紫薯",kcal:236},
+      {type:"粗粮抓饭",kcal:210},
+      {type:"香辣烤鸡胸",kcal:628},
+      {type:"烤龙利鱼",kcal:523},
+      {type:"麻辣鸡丝",kcal:729},
+      ];
+      this.sportType="菜品种类"      
+    }
    },
    methods:{
     choosedelet:function(){

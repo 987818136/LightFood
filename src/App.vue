@@ -1,12 +1,12 @@
 <template>
   <div id="app">
-    <myhead :headertitle="headertitle"></myhead>
+    <myhead ></myhead>
     <div class="wraper" ref="scrollwrap">
      <keep-alive> 
-      <router-view @recordme="recordme"/>
+      <router-view @recordme="recordme" />
      </keep-alive>
     </div>
-    <myfoot @footerchange="footerchange"></myfoot>
+    <myfoot></myfoot>
     <transition name="record">
      <record v-if="recordshow" :sportkcal="allkcal" :foodkcal="foodkcal" @hiddenrecord="hiddenrecord" :usertarget="usertarget"></record> 
     </transition>       
@@ -22,6 +22,8 @@ import "./style/reset.css"
 import "./assets/iconfont/iconfont.css"
 import scroll from "better-scroll"
  import record from "./components/record"
+ import axios from "axios";
+
 export default {
   name: 'App',
   components:{
@@ -33,6 +35,10 @@ export default {
   new scroll(this.$refs.scrollwrap,{
     click:true
   });
+  this.hub.$on("getuser",function(data){
+    this.userdata=data;
+    console.log(data);
+  })
   },
   updated:function(){
   new scroll(this.$refs.scrollwrap,{
@@ -41,17 +47,14 @@ export default {
   },
   data:function(){
     return {
-      headertitle:"热量计算",
         recordshow:false,
         usertarget:20,
         allkcal:0,
-        foodkcal:0     
+        foodkcal:0,
     }
   },
   methods:{
-    footerchange:function(mes){
-        this.headertitle=mes;
-    },
+ 
     hiddenrecord:function(){
         this.recordshow=false;
     },
@@ -59,7 +62,7 @@ export default {
       this.allkcal=allkcal;
       this.foodkcal=foodkcal;
       this.recordshow=true;
-    }     
+    }, 
   }
 }
 </script>

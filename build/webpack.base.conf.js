@@ -30,7 +30,8 @@ module.exports = {
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src'),
-      "@img":"../../static/img"
+      "@img":"../../static/img",
+      "api":"localhost/lf"
     }
   },
   module: {

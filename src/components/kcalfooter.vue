@@ -1,4 +1,4 @@
-<template>
+ <template>
 	<div class="footer bgcolor flex-fix" >
         <div class="color-ban" ref="coloer"></div>
         <div :class="['footer-item',item.classon]" v-for="(item,index) of classList" @click="bottomclick(index,item.name)">
@@ -10,6 +10,7 @@
       </div>
 </template>
 <script type="text/javascript">
+ import axios from "axios"
 	export default {
        name:"kcalfooter",
        data:function(){
@@ -29,12 +30,29 @@
          this.routerchang();
         }
        },
+       beforeMount:function(){
+       var that=this;
+        axios.get("./api/lf/checkcookie.php").then(function(re){
+          if(re.data===0){
+            that.classList[3].path="/login";
+             that.classList[2].path="/login";
+          }
+          else{
+            that.classList[3].path="/mine";
+             that.classList[2].path="/card";
+          }          
+         });        
+       },
        mounted:function(){
-          this.routerchang();
+        var that=this;
+         this.hub.$on("loginfooter",function(){
+         that.classList[3].path="/mine";
+         that.classList[2].path="/card";
+        });
+          this.routerchang();  
        },
        methods:{
          bottomclick:function(num,name){
-            this.$emit("footerchange",name);
             this.move(num);
          },
          move:function(num){
@@ -56,18 +74,31 @@
          routerchang:function(){
           var _nowrouter=this.$route.path;
           var num=0;
-          console.log(_nowrouter);
+          var that=this;
+
+           function _change(item,index){
+                item.classon.footeronchoose=true;
+               num=index;
+           }
+
+           if(_nowrouter=="/login"||_nowrouter=="/reg"){
+              num=3;
+              this.classList[3].classon.footeronchoose=true;
+              this.classList[3].path="/login";
+              this.classList[2].path="/login";
+            }
+            else{
+
           this.classList.forEach(function(item,index){
             item.classon.footeronchoose=false;
             if(item.path===_nowrouter){
-              item.classon.footeronchoose=true;
-               num=index;
+                _change(item,index);
             }
             else if(_nowrouter.indexOf(item.path)!=-1&&item.path!="/"){
-              item.classon.footeronchoose=true;
-               num=index;
+                _change(item,index);
             }
           });
+            }
           this.move(num); 
          }
        }

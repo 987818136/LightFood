@@ -1,7 +1,7 @@
 <template>
   <div class="cardcontent">	
   	 <div class="carded-day-content"><span>已经打卡</span><span class="card-num">{{finishday}}</span><span>天</span></div>
-     <carditem v-for="item,index in cardList" :carddata="item" :index="index" @cardremove="cardremove" @finishadd="finishadd"></carditem>
+     <carditem v-for="item,index in cardList" :carddata="item" :index="index" :uid="uid" :targetid="item.targetid" @cardremove="cardremove" @finishadd="finishadd"></carditem>
      <div class="card-add-content">
        <div class="card-add-button" v-show="addshow==='add'" >
        	 <button @click="showinput">添加目标</button>
@@ -12,11 +12,16 @@
        	 <button @click="getbackadd">取消</button>
        </div>
      </div>
+     <div class="button-finish-group">
       <button 
       :class="['all-unfinishi',{allfinish:allfinish},{hadsend:hadsend}]"
        @click="sendfinish"
        v-html="targetstate">
      </button>
+       <transition name="card"  enter-active-class="card-finishmessage-show">
+        <div class="card-finish-message" v-show="hadsend"><span class="iconfont">&#xe601</span>很赞，今日完成，打卡+1</div>
+       </transition>     
+     </div>
    </div>
 </template>
 
@@ -29,17 +34,43 @@ export default {
   },
   data:function(){
     return {
-     cardList:[{title:'跑步40分钟'},{title:'只吃一份500g沙拉'},{title:'平板支撑20分钟'}],
+     cardList:[],
      finishnum:0,
      readyadd:'',
      addshow:"add",
      finishday:0,
      allfinish:false,
      nowstate:0,
-     hadsend:false
+     hadsend:false,
+     uid:0
     }
   },
+     mounted:function(){
+      this.getajax();
+     },
+    activated:function(){
+       this.getajax();
+    },  
   methods:{
+      getajax:function(fn){
+        var that=this;
+        this.axios.get("./api/lf/getcookie.php").then(function(re){
+            var uid=re.data;
+            that.uid=uid;
+           that.axios.post("./api/lf/cardread.php?act=read","uid="+uid).then(function(re2){
+              var _length=re2.data.length-1;
+              var _cardis=re2.data[_length].cardis-0;
+             that.finishday=re2.data[_length].cardday;
+              var _target=re2.data.splice(0,_length);
+              that.cardList=_target;
+              console.log(_target);
+             if(!_cardis==0){
+              that.hadsend=true;
+              that.nowstate=3;
+             }
+           });
+        });    
+      },    
    cardremove:function(x){
     this.cardList.splice(x,1);
    },
@@ -53,16 +84,29 @@ export default {
    	this.addshow="add";
    },
    addtarget:function(){
-   	this.cardList.push({title:this.readyadd});
+    that=this;
+    this.cardList.push({target:this.readyadd,targetid:0});
+    this.axios.post("./api/lf/cardread.php?act=add","uid="+this.uid+"&target="+this.readyadd).then(function(re){
+       that.cardList[that.cardList.length-1][targetid]=re.data;
+    });    
    	this.readyadd='';
    	this.getbackadd();
    },
    sendfinish:function(){
+    if(this.hadsend){
+
+    }
+    else{
     if(this.allfinish){
       this.finishday++;
       this.allfinish=false;
       this.nowstate=3;
       this.hadsend=true;
+      var _string="uid="+this.uid+"&cardday="+this.finishday;
+         this.axios.post("./api/lf/cardsend.php", _string).then(function(re2){
+            console.log(re2.data);   
+           });      
+     }
     }
    }
   },
@@ -145,4 +189,34 @@ export default {
     width: 20%;
     padding: 4px 0px;
   }
+  .button-finish-group{
+    position: relative;
+  }
+  .card-finish-message{
+    position: absolute;
+    bottom:0px;
+    text-align: center;
+    width: 100%;
+    opacity: 0;
+    color: #666;
+  } .card-finish-message span{
+    color: #666;
+  }
+  .card-finishmessage-show{
+    animation: card 1.5s
+  }
+ @keyframes card{
+  0% {
+    opacity: 0;
+    bottom: 0;
+  }
+  50% {
+    opacity: 1;
+    bottom: 35px;
+  }
+  100% {
+    opacity: 0;
+    bottom: 60px;
+  }
+}
 </style>

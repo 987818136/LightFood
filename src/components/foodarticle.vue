@@ -1,16 +1,16 @@
- <template>
+  <template>
   <div class="article-item-content" >	
-    <router-link :to="'/train/'+articleitem.id">
-    <div class="article-img-item" v-if="articleitem.type==='img'">
+    <router-link :to="'/train/'+articleitem.aid">
+    <div class="article-img-item" v-if="articleitem.atype==='img'">
       <div class="article-left"><img :src="articleitem.imgurl"></div>
       <div class="article-right">
         <h5 class="article-title">{{articleitem.title}}</h5>
-        <p class="three-line color-p">{{articleitem.introduce}}</p>
+        <p class="three-line color-p">{{articleitem.description}}</p>
       </div>
     </div>
-    <div class="article-simple-item" v-if="articleitem.type==='letter'">
+    <div class="article-simple-item" v-if="articleitem.atype==='letter'">
         <h5 class="article-title">{{articleitem.title}}</h5>
-        <p class="three-line color-p">{{articleitem.introduce}}</p>
+        <p class="three-line color-p">{{articleitem.description}}</p>
     </div>
     </router-link>
    </div>
@@ -19,7 +19,6 @@
 <script type="text/javascript">
 import swiper from "vue-awesome-swiper";
 import banner from "./banner";
- 
 export default {
   name: 'foodsarticle',
   props:["articleitem"],
@@ -64,10 +63,11 @@ export default {
  .article-right{
   float: right;
   width: 55%;
+  font-size: 12px;
  }
  .three-line{
   overflow:hidden; 
-
+font-size: 12px;
 text-overflow:ellipsis;
 
 display:-webkit-box; 

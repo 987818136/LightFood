@@ -7,55 +7,104 @@
             </div>
             <div class="user-name-content">
               <div class="user-name">
-               闪闪发光的sparsh
+               {{userdata.name}}
               </div>
               <div class="user-grary">
-                <span class="iconfont">&#xe60e</span><span>10个</span>
+                <span class="iconfont">&#xe60e</span><span>{{userdata.honner+'个'}}</span>
               </div>
             </div>
           </div>
           <div class="user-kcalc">
        	 <div class="user-target-content">
              <div class="user-target-letter">
-               <span class="user-now">当前瘦身：{{this.usernow}}</span>
-               <span class="user-target">目标瘦身：{{this.usertarget}}</span>
+               <span class="user-now">当前瘦身：{{userdata.nowreduce}}</span>
+               <span class="user-target">目标瘦身：{{userdata.targetreduce}}</span>
              </div>
-             <canvas ref="linedraw"  ></canvas>
+             <canvas ref="linedraw" ></canvas>
        	 </div>
-          </div>       	 
+          </div>  
+          <div class="user-sport-group">
            <div class="user-sport-data">
             <h5 class="user-sport-tile">累积消耗了</h5>
-       	    <div class="user-sport-record">
-       	    <div class="user-sport">
-       	      <div class="user-sport-num">
-       	      	0
-       	      </div>
-       	      <div class="danwei">
-       	      	kCal
-       	      </div>
-       	    </div>
-       	 </div>
-        </div>
+            <div class="user-sport-record">
+            <div class="user-sport">
+              <div class="user-sport-num">
+               {{userdata.allconsume}}
+              </div>
+              <div class="danwei">
+                kCal
+              </div>
+            </div>
+            </div>
+           </div>  
+           <div class="user-sport-data">
+            <h5 class="user-sport-tile">累积摄入了</h5>
+            <div class="user-sport-record">
+            <div class="user-sport">
+              <div class="user-sport-num">
+                {{userdata.allfood}}
+              </div>
+              <div class="danwei">
+                kCal
+              </div>
+            </div>
+            </div>
+           </div>
+          </div>     	 
        </div>
        <div class="mine-handle-content ">
-          <div class="handle-li">修改目标</div>
+          <div class="handle-li"  @click="changetargetshow">
+            <span v-show="!targetshow">修改目标</span>
+            <div class="card-add-input" v-show="targetshow">
+             <input type="" />
+             <button @click.stop="changetarget">添加</button>
+             <button @click.stop="hiddenchange">取消</button>
+            </div>
+          </div>
+          <router-link to="/mine/history">
           <div class="handle-li">历史记录</div>
+          </router-link >
+          <router-link to="/mine/reverse">          
+          <div class="handle-li">修改资料</div>
+          </router-link >
+          <div class="handle-li" @click="loginout">退出登录</div>
        </div>
     </div>
 </template>
 
 <script type="text/javascript">
-
+  import axios from 'axios'
 	export default {
 		name:"mine",
 		data:function(){
 			return {
-	     usernow:4.5,
-       usertarget:20
+       targetshow:false,
+       uid:0,
+       userdata:{}
 			}
 		},
      mounted:function(){
+      this.getajax();
+     },
+    activated:function(){
+       this.getajax();
+    },
+		methods:{
+      getajax:function(fn){
+        var that=this;
+        axios.get("./api/lf/getcookie.php").then(function(re){
+            var uid=re.data;
+           axios.post("./api/lf/getuserinfo.php","uid="+uid).then(function(re2){
+               that.userdata=re2.data;
+               console.log(re2.data);
+               that.drawline(re2.data.nowreduce,re2.data.targetreduce)
+           })
+        });    
+      },
+     drawline:function(now,target){
       var cav=this.$refs.linedraw;
+      var per=now/target;
+
       var width=document.body.clientWidth-30;
       cav.width=width;
       cav.height=10; 
@@ -63,12 +112,25 @@
       ctx.beginPath();     
       ctx.shadowBlur=10;
       ctx.shadowColor="#F9BC73";      
-      ctx.rect(0,0,width*0.3,10);
+      ctx.rect(0,0,width*per,10);
       ctx.fillStyle="#F9BC73" ;     
       ctx.fill();
      },
-		methods:{
-	    
+	   changetargetshow:function(){
+      this.targetshow=true;
+     },
+     hiddenchange:function(){
+      this.targetshow=false;
+     },
+     changetarget:function(){
+       this.hiddenchange();
+     },
+     loginout:function(){
+        this.$router.push('/login'); 
+        axios.get("./api/lf/login.php?act=loginout").then(function(re){
+          console.log(re.data);
+        });      
+     }
 		}
 	}
 </script>
@@ -106,18 +168,22 @@ text-align: center;
 .user-target-content canvas{
   border:2px solid white;
   border-radius: 15px;
+  width: 100%;
+  height: 10px;
 }
 .user-grary{
        padding-top: 8px;
        font-size: 12px;
 }
  
-.user-sport-num{
-  font-size: 24px;
+.user-sport-record .user-sport-num{
+  font-size: 20px;
   padding-right: 10px;
+  color:#FF9857;
 }
 .user-sport-num,.danwei{
   float: left;
+  font-size: 12px;
 }
 .handle-li{
   padding-left: 15px;
@@ -138,10 +204,16 @@ background-image: linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%);
 }
 .user-sport-data{
   padding-left: 15px;
-
+ float: left;
   padding-bottom: 10px;
+  width: 40%;
 }
-
+.user-sport-data *{
+  color: white;
+}
+.user-sport-group{
+  overflow: hidden;
+}
 
 .user-now{
   float: left;
@@ -157,4 +229,20 @@ background-image: linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%);
 .handle-li{
   border-bottom: 1px solid #e1e1e1;
 }
+.card-add-input{
+  text-align: center;
+}
+ .card-add-input button{
+  background-color: #777;
+  width: 40%;
+  padding: 4px;
+  border-radius: 10px;
+  color: white;
+ }
+  .card-add-input button{
+    background-color: #777;
+    width: 20%;
+    padding: 4px 0px;
+  }
+
 </style>

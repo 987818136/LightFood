@@ -17,6 +17,21 @@
 import axios from "axios";
 	export default {
 		name:"detail",
+    mounted:function(){
+      this.getajax();
+  },  
+    activated:function(){
+       this.id=this.$route.params.id;	
+       this.getajax();
+    },  
+  methods:{  
+    getajax:function(){
+         var that=this;
+         axios.get("./api/lf/getarticle.php?act=detail&aid="+this.id).then(function(re){
+            that.articledata=re.data[0]
+         });   
+    }
+   } ,         		
 		data:function(){
 			return{
 			  id:this.$route.params.id,
@@ -51,10 +66,17 @@ import axios from "axios";
    .article-dataspan{
    	padding-right: 8px;
     }
+    .article-content{
+    	    	padding-bottom: 50px;
+    }
     .article-content p{
        padding: 10px 0;
     }
     .article-content img{
         width: 100%;
+    }
+    .article-content h6{
+    	font-size: 16px;
+    	font-weight: 600;
     }
 </style>

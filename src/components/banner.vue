@@ -21,7 +21,7 @@ import Vue from "vue";
        },
        data:function(){
        	return {
-       		banerlist:[{id:"001",imgurl:"../../static/img/b1.jpg",mes:"this is mes"},{id:"002",imgurl:"../../static/img/b2.jpg",mes:"this is mes"},{id:"003",imgurl:"../../static/img/b3.jpg",mes:"this is mes"}],
+       		banerlist:[{id:"001",imgurl:"../../static/img/b1.jpg",mes:"轻食时代助你小蛮腰"},{id:"002",imgurl:"../../static/img/b2.jpg",mes:"瘦腿不只是跑步而已"},{id:"003",imgurl:"../../static/img/b3.jpg",mes:"身材好是什么样的体验"}],
        		swiperOption:{
        			loop:true
        		}

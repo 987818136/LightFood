@@ -11,7 +11,8 @@ c<template>
 <script type="text/javascript">
 import swiper from "vue-awesome-swiper";
 import banner from "./banner";
-import foodarticle from "./foodarticle"
+import foodarticle from "./foodarticle";
+ import axios from "axios";
 export default {
   name: 'train',
   components:{
@@ -20,32 +21,22 @@ export default {
   },
   data:function(){
     return {
-     articleList:[
-      {  
-        id:"001",
-        title:"it's title 1",
-        type:"img",
-        imgurl:"../../static/img/food.jpg",
-        introduce:"很多人可能觉得吃草就能瘦，但是真的是这样的吗?骑士并不是如此"
-      },
-      {
-        id:"002",
-        title:"it's title 1",
-        type:"img",
-        imgurl:"../../static/img/food.jpg",
-        introduce:"很多人可能觉得吃草就能瘦，但是真的是这样的吗?骑士并不是如此"
-      },
-      {
-        id:"003",
-        title:"it's title 1",
-        type:"letter",
-        imgurl:"../../static/img/food.jpg",
-        introduce:"this is a letterletterletter a letterletterletter a letterletterletter a letterletterletter a letterletterletter"
-      }            
-     ]
+     articleList:[]
     }
   },
-  methods:{
+    mounted:function(){
+      this.getajax();
+  },  
+    activated:function(){
+       this.getajax();
+    },  
+  methods:{  
+    getajax:function(){
+      var that=this;
+    axios.get("./api/lf/getarticle.php?act=intro").then(function(re){
+        that.articleList=re.data;
+    });    
+    }
   
    }
 }
@@ -53,7 +44,7 @@ export default {
 
 <style type="text/css">
 .article-wraper{
-  padding-bottom: 70px;
+  padding-bottom: 100px;
 }
 	.traincontent{
 		padding-bottom: 100px;

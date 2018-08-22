@@ -1,6 +1,6 @@
 c<template>
   <div class="carditem-content"> 
-    <div class="carditem-title">{{carddata.title}}</div>
+    <div class="carditem-title">{{carddata.target}}</div>
     <div class="carditem-button">
       <button :class="['confirm-card',{carditemfinish:finish}]" @click="cardFin">{{finishmes}}</button>
       <button class="card-remove" @click="fatherDelete">删除</button>      
@@ -11,7 +11,7 @@ c<template>
 <script type="text/javascript">
 export default {
   name: 'carditem',
-  props:["carddata","index"],
+  props:["carddata","index","uid","targetid"],
   data:function(){
     return {
      finish:false,
@@ -28,6 +28,9 @@ export default {
    },
    fatherDelete:function(){
     this.$emit("cardremove",this.index);
+    this.axios.post("./api/lf/cardread.php?act=delete","targetid="+this.targetid).then(function(re){
+      console.log(re.data);
+    });
    }
   }
 }

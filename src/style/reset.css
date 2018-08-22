@@ -9,3 +9,6 @@
   button{
   	outline: none;
   }
+  li{
+  	list-style: none;
+  }
