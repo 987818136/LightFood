@@ -7,7 +7,7 @@ import router from './router'
  Vue.prototype.axios=axios;
 Vue.prototype.hub=new Vue();
 Vue.config.productionTip = false
-
+axios.defaults.baseURL="http://localhost/";
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

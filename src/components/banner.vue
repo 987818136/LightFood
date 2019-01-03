@@ -4,7 +4,6 @@
       <img :src="slide.imgurl"/>
       <div class="slide-title">{{slide.mes}}</div>
     </swiper-slide>
- 
   </swiper>
 </template>
 
@@ -16,8 +15,8 @@ import Vue from "vue";
 	export default {
        name:"banner",
        components:{
-    swiper,
-    swiperSlide        
+        swiper,
+        swiperSlide        
        },
        data:function(){
        	return {

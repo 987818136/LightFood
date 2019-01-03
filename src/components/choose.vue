@@ -10,7 +10,9 @@
        </div>
        </transition>
      </div>
-     <div class="my-selected time-select"><input type="text" v-model="sportTime" :placeholder="choosetype==='sport'?'运动时间':'食物量'" /><span class="sport-name"> {{choosetype==='sport'?'分钟':'份'}}</span>
+   
+     <div class="my-selected time-select"><input type="text" v-model="sportTime" :placeholder="choosetype==='sport'?'运动时间':'食物量'" /><span class="sport-name">
+      {{choosetype==='sport'?'分钟':'份'}}</span>
      </div>    
      <button class="primary-button choose-delete" @click="choosedelet">删除</button> 
     </div>
